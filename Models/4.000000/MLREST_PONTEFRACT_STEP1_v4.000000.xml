@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Author>Lau Kok Leong</Author>
+  <LastAuthor>Lau Kok Leong</LastAuthor>
+  <Created>2015-01-07T12:28:04Z</Created>
+  <Version>15.00</Version>
+ </DocumentProperties>
+ <CustomDocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <WorkbookGuid dt:dt="string">4970144b-14cb-411b-a2c4-c46f37b31ee7</WorkbookGuid>
+ </CustomDocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>12435</WindowHeight>
+  <WindowWidth>28800</WindowWidth>
+  <WindowTopX>0</WindowTopX>
+  <WindowTopY>0</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s62">
+   <NumberFormat ss:Format="Scientific"/>
+  </Style>
+ </Styles>
+ <Names>
+  <NamedRange ss:Name="LOCAL_DATE_SEPARATOR"
+   ss:RefersTo="=INDEX(GET.WORKSPACE(37),17)" ss:Hidden="1"/>
+  <NamedRange ss:Name="LOCAL_DAY_FORMAT" ss:RefersTo="=INDEX(GET.WORKSPACE(37),21)"
+   ss:Hidden="1"/>
+  <NamedRange ss:Name="LOCAL_HOUR_FORMAT"
+   ss:RefersTo="=INDEX(GET.WORKSPACE(37),22)" ss:Hidden="1"/>
+  <NamedRange ss:Name="LOCAL_MINUTE_FORMAT"
+   ss:RefersTo="=INDEX(GET.WORKSPACE(37),23)" ss:Hidden="1"/>
+  <NamedRange ss:Name="LOCAL_MONTH_FORMAT"
+   ss:RefersTo="=INDEX(GET.WORKSPACE(37),20)" ss:Hidden="1"/>
+  <NamedRange ss:Name="LOCAL_MYSQL_DATE_FORMAT"
+   ss:RefersTo="=REPT(LOCAL_YEAR_FORMAT,4)&amp;LOCAL_DATE_SEPARATOR&amp;REPT(LOCAL_MONTH_FORMAT,2)&amp;LOCAL_DATE_SEPARATOR&amp;REPT(LOCAL_DAY_FORMAT,2)&amp;&quot; &quot;&amp;REPT(LOCAL_HOUR_FORMAT,2)&amp;LOCAL_TIME_SEPARATOR&amp;REPT(LOCAL_MINUTE_FORMAT,2)&amp;LOCAL_TIME_SEPARATOR&amp;REPT(LOCAL_SECOND_FORMAT,2)"
+   ss:Hidden="1"/>
+  <NamedRange ss:Name="LOCAL_SECOND_FORMAT"
+   ss:RefersTo="=INDEX(GET.WORKSPACE(37),24)" ss:Hidden="1"/>
+  <NamedRange ss:Name="LOCAL_TIME_SEPARATOR"
+   ss:RefersTo="=INDEX(GET.WORKSPACE(37),18)" ss:Hidden="1"/>
+  <NamedRange ss:Name="LOCAL_YEAR_FORMAT"
+   ss:RefersTo="=INDEX(GET.WORKSPACE(37),19)" ss:Hidden="1"/>
+ </Names>
+ <Worksheet ss:Name="MLREST_PONTEFRACT_STEP1_v4.0000">
+  <Table ss:ExpandedColumnCount="5" ss:ExpandedRowCount="36" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultRowHeight="15">
+   <Row>
+    <Cell><Data ss:Type="String">Model 7171: Logit, using observations 1-7980</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Dependent variable: DV_B_WIN</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Standard errors based on Hessian</Data></Cell>
+   </Row>
+   <Row ss:Index="5">
+    <Cell ss:Index="2"><Data ss:Type="String">coefficient</Data></Cell>
+    <Cell><Data ss:Type="String">std. error</Data></Cell>
+    <Cell><Data ss:Type="String">z</Data></Cell>
+    <Cell><Data ss:Type="String">p-value</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_LR_RUNNER_ADJ_POS</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.132281175</Data></Cell>
+    <Cell><Data ss:Type="Number">2.0419082000000002E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">-6.4783114719999997</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="Number">9.2800000000000005E-11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_HGEN_FPOS_LR_IMPROV_SCR</Data></Cell>
+    <Cell><Data ss:Type="Number">-5.0282119E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">1.1054974E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">-4.5483707080000002</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="Number">5.4099999999999999E-6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_COMP_JOC_AVG_F_POS_REL</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.13689553600000001</Data></Cell>
+    <Cell><Data ss:Type="Number">3.8704536999999997E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">-3.5369376959999999</Data></Cell>
+    <Cell><Data ss:Type="Number">4.04795E-4</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_COMP_HOR_LR_WEIGHTRANK_DIFF</Data></Cell>
+    <Cell><Data ss:Type="Number">0.25167169700000003</Data></Cell>
+    <Cell><Data ss:Type="Number">3.7383106999999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">6.732230629</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="Number">1.6700000000000001E-11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_LR_WEIGHT_RANK</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.25245015500000001</Data></Cell>
+    <Cell><Data ss:Type="Number">3.9131961E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">-6.4512524210000004</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="Number">1.11E-10</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_HGEN_LOG_UPCLASSAGE</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.27042266199999998</Data></Cell>
+    <Cell><Data ss:Type="Number">5.9376955000000002E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">-4.5543369570000003</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="Number">5.2599999999999996E-6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_JTRSHIP_WIN_PERCENTAGE</Data></Cell>
+    <Cell><Data ss:Type="Number">0.66889757299999997</Data></Cell>
+    <Cell><Data ss:Type="Number">0.28456429100000002</Data></Cell>
+    <Cell><Data ss:Type="Number">2.350602635</Data></Cell>
+    <Cell><Data ss:Type="Number">1.8743038E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_COMP_HOR_STAMINA_DIFF</Data></Cell>
+    <Cell><Data ss:Type="Number">0.17631411499999999</Data></Cell>
+    <Cell><Data ss:Type="Number">7.5782233000000004E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">2.3265890869999999</Data></Cell>
+    <Cell><Data ss:Type="Number">1.9987146000000001E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_HGEN_DAYS_DIFF_FR_MEAN</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.250183E-3</Data></Cell>
+    <Cell><Data ss:Type="Number">6.4047300000000002E-4</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.9519680450000001</Data></Cell>
+    <Cell><Data ss:Type="Number">5.0941999000000002E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_TRA_COUR_AVG_DISBEATEN</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.1828596E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">6.7747770000000001E-3</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.745975853</Data></Cell>
+    <Cell><Data ss:Type="Number">8.0815148000000003E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_COMP_HOR_PLACE_RATE_REL</Data></Cell>
+    <Cell><Data ss:Type="Number">0.85891315099999999</Data></Cell>
+    <Cell><Data ss:Type="Number">0.30089235199999997</Data></Cell>
+    <Cell><Data ss:Type="Number">2.8545529510000001</Data></Cell>
+    <Cell><Data ss:Type="Number">4.3097450000000002E-3</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_STALL_AVG_F_POS</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.15672860599999999</Data></Cell>
+    <Cell><Data ss:Type="Number">2.7374498000000001E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">-5.7253509749999996</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="Number">1.03E-8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_HGEN_AVERAGE_ODDS</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.0822417000000001E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">5.2109269999999997E-3</Data></Cell>
+    <Cell><Data ss:Type="Number">-2.0768697550000002</Data></Cell>
+    <Cell><Data ss:Type="Number">3.7813581999999998E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_HGEN_AVG_F_POSITION</Data></Cell>
+    <Cell><Data ss:Type="Number">9.3063062000000002E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">3.6716515999999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">2.5346375870000002</Data></Cell>
+    <Cell><Data ss:Type="Number">1.1256370999999999E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_COUR_CHAR_AVG_F_POS</Data></Cell>
+    <Cell><Data ss:Type="Number">-2.8234169999999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">1.3629709E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">-2.071516704</Data></Cell>
+    <Cell><Data ss:Type="Number">3.8310535E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_LR_PLACERATE_SUM_ADJ_POS</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.153446416</Data></Cell>
+    <Cell><Data ss:Type="Number">7.0274382999999996E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">-2.1835327320000002</Data></Cell>
+    <Cell><Data ss:Type="Number">2.8996601E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_CLAS_PLACE_PERCENTAGE</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.29878497399999998</Data></Cell>
+    <Cell><Data ss:Type="Number">0.15384954200000001</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.9420595679999999</Data></Cell>
+    <Cell><Data ss:Type="Number">5.2129888999999999E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_HGEN_DISB_ALL_IMPROV_SCR</Data></Cell>
+    <Cell><Data ss:Type="Number">-5.0817550000000003E-3</Data></Cell>
+    <Cell><Data ss:Type="Number">3.004517E-3</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.691371583</Data></Cell>
+    <Cell><Data ss:Type="Number">9.0765856000000006E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_DCODE_IS_DIVERGED_WEIGHT_FPOS</Data></Cell>
+    <Cell><Data ss:Type="Number">0.20875817399999999</Data></Cell>
+    <Cell><Data ss:Type="Number">9.8117313999999997E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">2.1276384830000001</Data></Cell>
+    <Cell><Data ss:Type="Number">3.3367068999999999E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_DCODE_UPCLASS_WINNER</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.30398655800000002</Data></Cell>
+    <Cell><Data ss:Type="Number">0.213534159</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.4235968640000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0.15456320400000001</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_TRA_HAGE_WIN_PERCENTAGE</Data></Cell>
+    <Cell><Data ss:Type="Number">0.80510558499999996</Data></Cell>
+    <Cell><Data ss:Type="Number">0.47961088800000001</Data></Cell>
+    <Cell><Data ss:Type="Number">1.6786641120000001</Data></Cell>
+    <Cell><Data ss:Type="Number">9.3217523999999996E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_LR_DOUBLE_LOG_ODDS_OVER_RUNNERS</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.46535148500000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0.110908443</Data></Cell>
+    <Cell><Data ss:Type="Number">-4.1958166019999998</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="Number">2.72E-5</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_LR_IS_FAVOURITE</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.249157138</Data></Cell>
+    <Cell><Data ss:Type="Number">0.13149941800000001</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.894739476</Data></Cell>
+    <Cell><Data ss:Type="Number">5.8126925000000003E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_HGEN_LEVEL_STAKE_GAIN</Data></Cell>
+    <Cell><Data ss:Type="Number">-5.0336560000000001E-3</Data></Cell>
+    <Cell><Data ss:Type="Number">3.0455479999999999E-3</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.65279161</Data></Cell>
+    <Cell><Data ss:Type="Number">9.8373282000000006E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_DCODE_LR_BEATEN_MORE_THAN_5LENGTH</Data></Cell>
+    <Cell><Data ss:Type="Number">-0.187111521</Data></Cell>
+    <Cell><Data ss:Type="Number">0.11200998600000001</Data></Cell>
+    <Cell><Data ss:Type="Number">-1.670489637</Data></Cell>
+    <Cell><Data ss:Type="Number">9.4822528000000003E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PV_DCODE_IS_IMPROVING_DISTBEATEN</Data></Cell>
+    <Cell><Data ss:Type="Number">0.13091815300000001</Data></Cell>
+    <Cell><Data ss:Type="Number">9.2028009999999993E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">1.422590274</Data></Cell>
+    <Cell><Data ss:Type="Number">0.15485496500000001</Data></Cell>
+   </Row>
+   <Row ss:Index="33">
+    <Cell><Data ss:Type="String">Mean dependent var</Data></Cell>
+    <Cell><Data ss:Type="Number">9.8746867000000002E-2</Data></Cell>
+    <Cell><Data ss:Type="String">S.D. dependent var</Data></Cell>
+    <Cell><Data ss:Type="Number">0.29834053900000002</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">McFadden R-squared</Data></Cell>
+    <Cell><Data ss:Type="Number">9.7067234000000002E-2</Data></Cell>
+    <Cell><Data ss:Type="String">Adjusted R-squared</Data></Cell>
+    <Cell><Data ss:Type="Number">8.6958840999999995E-2</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Log-likelihood</Data></Cell>
+    <Cell><Data ss:Type="Number">-2322.4514290000002</Data></Cell>
+    <Cell><Data ss:Type="String">Akaike criterion</Data></Cell>
+    <Cell><Data ss:Type="Number">4696.9028580000004</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Schwarz criterion</Data></Cell>
+    <Cell><Data ss:Type="Number">4878.5048939999997</Data></Cell>
+    <Cell><Data ss:Type="String">Hannan-Quinn</Data></Cell>
+    <Cell><Data ss:Type="Number">4759.0700239999996</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>30</ActiveRow>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

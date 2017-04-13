@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="PonyMLR.Modules.Manage.ManageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:DataAccess="clr-namespace:PonyMLR.DataAccess;assembly=PonyMLR.DataAccess"
+             xmlns:Infra="clr-namespace:PonyMLR.Infrastructure;assembly=PonyMLR.Infrastructure"             
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Infra:InvertBoolConverter x:Key="invertBoolConverter"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border>
+        <DockPanel>
+            <!-- Title -->
+            <Border DockPanel.Dock="Top" Height="Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="32" TextWrapping="Wrap" Margin="20,2"><Run Text="Manage"/></TextBlock>
+            </Border>                  
+            <Border>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- Controls -->
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <StackPanel>
+                            <Button Width="50" Height="50" Margin="5,5,5,5" Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding SaveRaceResultsCommand}">
+                                <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_upload}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </StackPanel>
+                    </Grid>                  
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <TextBlock Margin="12,15,0,10">
+                            <Run FontSize="22" FontWeight="Bold">
+                                <MultiBinding StringFormat="{}{0}   {1}">
+                                    <Binding Path="SelectedRace.race_time" />
+                                    <Binding Path="SelectedRace.racetrack.track_name" />
+                                </MultiBinding>
+                            </Run>
+                            <LineBreak/>
+                            <Run FontSize="16">
+                                <MultiBinding StringFormat="{}{0} ({1}f, Class {2}, {3} ran, {4})">
+                                    <Binding Path="SelectedRace.race_name" />
+                                    <Binding Path="SelectedRace.race_distance" />
+                                    <Binding Path="SelectedRace.race_class" />
+                                    <Binding Path="SelectedRace.race_number_of_runners" />
+                                    <Binding Path="SelectedRace.race_going" />
+                                </MultiBinding>
+                            </Run>
+                        </TextBlock>                       
+                    </Grid>               
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <DataGrid Grid.Row="0" Margin="8,8,8,8" ItemsSource="{Binding RacesInfo}" SelectedItem="{Binding Path=SelectedRace}" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Path=race_id}" Header="ID" IsReadOnly="True"/>
+                                <DataGridTextColumn Binding="{Binding Path=race_date, StringFormat='{}{0:dd/MM/yyyy}'}" Header="Date"/>
+                                <DataGridTextColumn Binding="{Binding Path=race_time}" Header="Time"/>
+                                <DataGridTextColumn Binding="{Binding Path=racetrack.track_name}" Header="Race Track"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <!-- to show progress ring if needed -->
+                        <Controls:ProgressRing Grid.Row="0" IsActive="{Binding CanDisplayRaces, Converter={StaticResource invertBoolConverter}}" Foreground="{DynamicResource AccentColorBrush}"/>
+                        <Grid Grid.Row="1">
+                            <Calendar x:Name="raceCalendar" Margin="20,8" VerticalAlignment="Bottom" Loaded="Calendar_Loaded" SelectedDate="{Binding Path=SelectedDate}">
+                                <Calendar.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+                                </Calendar.LayoutTransform>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedDatesChanged">
+                                        <i:InvokeCommandAction Command="{Binding SelectionDatesChangedCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Calendar>
+                        </Grid>
+                    </Grid>
+                    <DataGrid Grid.Row="1" Grid.Column="1" Margin="8,8,8,8" ItemsSource="{Binding SelectedRace.race_result}" SelectedItem="{Binding SelectedStarter}"  AutoGenerateColumns="False">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedStarterChangedCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path=finishing_position}" Header="Pos" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Path=stall}" Header="Stall"/>
+                            <DataGridTextColumn Binding="{Binding Path=distance_beaten}" Header="Dist"/>
+                            <DataGridTextColumn Binding="{Binding Path=horse_info.horse_name}" Header="Horse Name"/>
+                            <DataGridTextColumn Binding="{Binding Path=horse_age}" Header="Age"/>
+                            <DataGridTextColumn Binding="{Binding Path=pounds}" Header="Weight"/>
+                            <DataGridTextColumn Binding="{Binding Path=jockey_info.jockey_name}" Header="Jockey Name" />
+                            <DataGridTextColumn Binding="{Binding Path=trainer_info.trainer_name}" Header="Trainer Name" />
+                            <DataGridTextColumn Binding="{Binding Path=odds, StringFormat=###.##}" Header="SP">
+                                <DataGridTextColumn.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=is_favourite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="true">
+                                                <Setter Property="FontSize" Value="13" />
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                            </DataTrigger>                                          
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </DockPanel>
+    </Border>
+</UserControl>

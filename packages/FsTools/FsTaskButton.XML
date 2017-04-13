@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FsTaskButton</name>
+    </assembly>
+    <members>
+        <member name="T:FsTaskButton.TaskButton">
+            <summary>
+            A button styled to resemble a Outlook 2010 task button.
+            </summary>
+        </member>
+        <member name="M:FsTaskButton.TaskButton.#cctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="P:FsTaskButton.TaskButton.Image">
+            <summary>
+            The image displayed by the button.
+            </summary>
+            <remarks>The image is specified in XAML as an absolute or relative path.</remarks>
+        </member>
+        <member name="P:FsTaskButton.TaskButton.Text">
+            <summary>
+            The text displayed by the button.
+            </summary>
+        </member>
+        <member name="T:FsTaskButton.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:FsTaskButton.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:FsTaskButton.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:FsTools.Converters.LuminanceConverter">
+            <summary>
+            Adjusts the luminance of an RGB color, using the HLS color model.
+            </summary>
+            <remarks>See http://www.codeproject.com/KB/WPF/WpfColorConversions.aspx for an 
+            explanation of the HLS color space and adjusting the luminance of a color.</remarks>
+        </member>
+        <member name="M:FsTools.Converters.LuminanceConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Adjusts the luminance of an ARGB color by a specified percentage.
+            </summary>
+            <param name="value">A Brush object representing the RGB color to adjust.</param>
+            <param name="targetType">WPF type; not used in this converter.</param>
+            <param name="parameter">The percentage by which the color should be increased (+) or decreased (-), as a decimal.</param>
+            <param name="culture">WPF Culture info; not used in this converter.</param>
+            <returns>A SolidColorBrush object, with luminance adjusted per the parameter passed in.</returns>
+            <remarks>The luminance of the ARGB color passed in is adjusted by the value passed in 
+            via the 'parameter' argument. The 'parameter' argument represents the number of percentage 
+            points by which luminance should be increased (+) or decreased (-). For example, a parameter 
+            of '0.2' will increase the luminance of the color by 20 percentage points, and a parameter 
+            of '-0.2' will decrease it by 20 percentage points. Results are constrained to luminance 
+            values between  0.0 (black) and 1.0 (white).
+            
+            Note that if a GradientBrush object is passed in, the converter will find the darkest color 
+            in the gradient and adjust that color.</remarks>
+        </member>
+        <member name="M:FsTools.Converters.LuminanceConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Not implemented in this converter; will throw an exception if called.
+            </summary>
+        </member>
+        <member name="M:FsTools.Converters.LuminanceConverter.RgbToHls(System.Windows.Media.Color)">
+            <summary>
+            Converts a WPF RGB color to an HSL color
+            </summary>
+            <param name="rgbColor">The RGB color to convert.</param>
+            <returns>An HSL color object equivalent to the RGB color object passed in.</returns>
+        </member>
+        <member name="M:FsTools.Converters.LuminanceConverter.HlsToRgb(FsTools.Converters.LuminanceConverter.HlsColor)">
+            <summary>
+            Converts a WPF HSL color to an RGB color
+            </summary>
+            <param name="hlsColor">The HSL color to convert.</param>
+            <returns>An RGB color object equivalent to the HSL color object passed in.</returns>
+        </member>
+        <member name="M:FsTools.Converters.LuminanceConverter.GetDarkestColorFromGradient(System.Object)">
+            <summary>
+            Gets the lightest or darkest color from a gradient brush.
+            </summary>
+            <param name="value">The gradient brush to analyze.</param>
+            <returns>A SolidColorBrush representing the selected color.</returns>
+        </member>
+        <member name="M:FsTools.Converters.LuminanceConverter.SetColor(System.Double,System.Double,System.Double)">
+            <summary>
+            Used by the HSL-to-RGB converter.
+            </summary>
+            <param name="t1">A temporary variable.</param>
+            <param name="t2">A temporary variable.</param>
+            <param name="t3">A temporary variable.</param>
+            <returns>An RGB color value, in decimal format.</returns>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>

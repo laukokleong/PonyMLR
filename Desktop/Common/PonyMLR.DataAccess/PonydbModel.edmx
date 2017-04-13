@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ponydbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="horse_info">
+          <Key>
+            <PropertyRef Name="horse_id" />
+          </Key>
+          <Property Name="horse_id" Type="int" Nullable="false" />
+          <Property Name="horse_name" Type="varchar" MaxLength="127" Nullable="false" />
+        </EntityType>
+        <EntityType Name="jockey_info">
+          <Key>
+            <PropertyRef Name="jockey_id" />
+          </Key>
+          <Property Name="jockey_id" Type="int" Nullable="false" />
+          <Property Name="jockey_name" Type="varchar" MaxLength="63" Nullable="false" />
+          <Property Name="alternate_name" Type="varchar" MaxLength="63" />
+          <Property Name="description" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="race_info">
+          <Key>
+            <PropertyRef Name="race_id" />
+          </Key>
+          <Property Name="race_id" Type="int" Nullable="false" />
+          <Property Name="race_date" Type="date" Nullable="false" />
+          <Property Name="race_time" Type="time" Precision="0" Nullable="false" />
+          <Property Name="track_key" Type="int" Nullable="false" />
+          <Property Name="race_name" Type="varchar" MaxLength="255" />
+          <Property Name="race_restrictions_age" Type="varchar" MaxLength="12" />
+          <Property Name="race_class" Type="int" Nullable="false" />
+          <Property Name="race_distance" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="race_prize_money" Type="int" />
+          <Property Name="race_going" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="race_number_of_runners" Type="int" Nullable="false" />
+          <Property Name="race_finishing_time" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="race_result">
+          <Key>
+            <PropertyRef Name="result_id" />
+          </Key>
+          <Property Name="result_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="race_key" Type="int" Nullable="false" />
+          <Property Name="finishing_position" Type="uint" Nullable="false" />
+          <Property Name="distance_beaten" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="is_winner" Type="bool" Nullable="false" />
+          <Property Name="is_placer" Type="bool" Nullable="false" />
+          <Property Name="horse_key" Type="int" Nullable="false" />
+          <Property Name="stall" Type="uint" Nullable="false" />
+          <Property Name="trainer_key" Type="int" Nullable="false" />
+          <Property Name="horse_age" Type="uint" Nullable="false" />
+          <Property Name="jockey_key" Type="int" Nullable="false" />
+          <Property Name="jockeys_claim" Type="int" />
+          <Property Name="pounds" Type="uint" Nullable="false" />
+          <Property Name="odds" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="is_favourite" Type="bool" />
+          <Property Name="race_comment" Type="varchar" MaxLength="1023" />
+        </EntityType>
+        <EntityType Name="racetrack">
+          <Key>
+            <PropertyRef Name="track_id" />
+          </Key>
+          <Property Name="track_id" Type="int" Nullable="false" />
+          <Property Name="track_name" Type="varchar" MaxLength="25" />
+          <Property Name="flat_characteristic" Type="varchar" MaxLength="25" />
+          <Property Name="straight_distance" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="course_shape" Type="varchar" MaxLength="25" />
+          <Property Name="turn_direction" Type="varchar" MaxLength="25" />
+          <Property Name="speed" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="trainer_info">
+          <Key>
+            <PropertyRef Name="trainer_id" />
+          </Key>
+          <Property Name="trainer_id" Type="int" Nullable="false" />
+          <Property Name="trainer_name" Type="varchar" MaxLength="63" Nullable="false" />
+          <Property Name="alternate_name" Type="varchar" MaxLength="63" />
+          <Property Name="description" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_horse">
+          <End Role="horse_info" Type="Self.horse_info" Multiplicity="1" />
+          <End Role="race_result" Type="Self.race_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="horse_info">
+              <PropertyRef Name="horse_id" />
+            </Principal>
+            <Dependent Role="race_result">
+              <PropertyRef Name="horse_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_jockey">
+          <End Role="jockey_info" Type="Self.jockey_info" Multiplicity="1" />
+          <End Role="race_result" Type="Self.race_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jockey_info">
+              <PropertyRef Name="jockey_id" />
+            </Principal>
+            <Dependent Role="race_result">
+              <PropertyRef Name="jockey_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_race_info">
+          <End Role="race_info" Type="Self.race_info" Multiplicity="1" />
+          <End Role="race_result" Type="Self.race_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="race_info">
+              <PropertyRef Name="race_id" />
+            </Principal>
+            <Dependent Role="race_result">
+              <PropertyRef Name="race_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_racetrack">
+          <End Role="racetrack" Type="Self.racetrack" Multiplicity="1" />
+          <End Role="race_info" Type="Self.race_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="racetrack">
+              <PropertyRef Name="track_id" />
+            </Principal>
+            <Dependent Role="race_info">
+              <PropertyRef Name="track_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trainer">
+          <End Role="trainer_info" Type="Self.trainer_info" Multiplicity="1" />
+          <End Role="race_result" Type="Self.race_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trainer_info">
+              <PropertyRef Name="trainer_id" />
+            </Principal>
+            <Dependent Role="race_result">
+              <PropertyRef Name="trainer_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ponydbModelStoreContainer">
+          <EntitySet Name="horse_info" EntityType="Self.horse_info" Schema="ponydb" store:Type="Tables" />
+          <EntitySet Name="jockey_info" EntityType="Self.jockey_info" Schema="ponydb" store:Type="Tables" />
+          <EntitySet Name="race_info" EntityType="Self.race_info" Schema="ponydb" store:Type="Tables" />
+          <EntitySet Name="race_result" EntityType="Self.race_result" Schema="ponydb" store:Type="Tables" />
+          <EntitySet Name="racetrack" EntityType="Self.racetrack" Schema="ponydb" store:Type="Tables" />
+          <EntitySet Name="trainer_info" EntityType="Self.trainer_info" Schema="ponydb" store:Type="Tables" />
+          <AssociationSet Name="FK_horse" Association="Self.FK_horse">
+            <End Role="horse_info" EntitySet="horse_info" />
+            <End Role="race_result" EntitySet="race_result" />
+          </AssociationSet>
+          <AssociationSet Name="FK_jockey" Association="Self.FK_jockey">
+            <End Role="jockey_info" EntitySet="jockey_info" />
+            <End Role="race_result" EntitySet="race_result" />
+          </AssociationSet>
+          <AssociationSet Name="FK_race_info" Association="Self.FK_race_info">
+            <End Role="race_info" EntitySet="race_info" />
+            <End Role="race_result" EntitySet="race_result" />
+          </AssociationSet>
+          <AssociationSet Name="FK_racetrack" Association="Self.FK_racetrack">
+            <End Role="racetrack" EntitySet="racetrack" />
+            <End Role="race_info" EntitySet="race_info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trainer" Association="Self.FK_trainer">
+            <End Role="trainer_info" EntitySet="trainer_info" />
+            <End Role="race_result" EntitySet="race_result" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ponydbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="horse_info">
+          <Key>
+            <PropertyRef Name="horse_id" />
+          </Key>
+          <Property Name="horse_id" Type="Int32" Nullable="false" />
+          <Property Name="horse_name" Type="String" MaxLength="127" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="race_result" Relationship="Self.FK_horse" FromRole="horse_info" ToRole="race_result" />
+        </EntityType>
+        <EntityType Name="jockey_info">
+          <Key>
+            <PropertyRef Name="jockey_id" />
+          </Key>
+          <Property Name="jockey_id" Type="Int32" Nullable="false" />
+          <Property Name="jockey_name" Type="String" MaxLength="63" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="alternate_name" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="race_result" Relationship="Self.FK_jockey" FromRole="jockey_info" ToRole="race_result" />
+        </EntityType>
+        <EntityType Name="race_info">
+          <Key>
+            <PropertyRef Name="race_id" />
+          </Key>
+          <Property Name="race_id" Type="Int32" Nullable="false" />
+          <Property Name="race_date" Type="DateTime" Nullable="false" />
+          <Property Name="race_time" Type="Time" Nullable="false" />
+          <Property Name="track_key" Type="Int32" Nullable="false" />
+          <Property Name="race_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="race_restrictions_age" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="race_class" Type="Int32" Nullable="false" />
+          <Property Name="race_distance" Type="Decimal" Nullable="false" />
+          <Property Name="race_prize_money" Type="Int32" />
+          <Property Name="race_going" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="race_number_of_runners" Type="Int32" Nullable="false" />
+          <Property Name="race_finishing_time" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="race_result" Relationship="Self.FK_race_info" FromRole="race_info" ToRole="race_result" />
+          <NavigationProperty Name="racetrack" Relationship="Self.FK_racetrack" FromRole="race_info" ToRole="racetrack" />
+        </EntityType>
+        <EntityType Name="race_result">
+          <Key>
+            <PropertyRef Name="result_id" />
+          </Key>
+          <Property Name="result_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="race_key" Type="Int32" Nullable="false" />
+          <Property Name="finishing_position" Type="Int64" Nullable="false" />
+          <Property Name="distance_beaten" Type="Decimal" />
+          <Property Name="is_winner" Type="Boolean" Nullable="false" />
+          <Property Name="is_placer" Type="Boolean" Nullable="false" />
+          <Property Name="horse_key" Type="Int32" Nullable="false" />
+          <Property Name="stall" Type="Int64" Nullable="false" />
+          <Property Name="trainer_key" Type="Int32" Nullable="false" />
+          <Property Name="horse_age" Type="Int64" Nullable="false" />
+          <Property Name="jockey_key" Type="Int32" Nullable="false" />
+          <Property Name="jockeys_claim" Type="Int32" />
+          <Property Name="pounds" Type="Int64" Nullable="false" />
+          <Property Name="odds" Type="Decimal" />
+          <Property Name="is_favourite" Type="Boolean" />
+          <Property Name="race_comment" Type="String" MaxLength="1023" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="horse_info" Relationship="Self.FK_horse" FromRole="race_result" ToRole="horse_info" />
+          <NavigationProperty Name="jockey_info" Relationship="Self.FK_jockey" FromRole="race_result" ToRole="jockey_info" />
+          <NavigationProperty Name="race_info" Relationship="Self.FK_race_info" FromRole="race_result" ToRole="race_info" />
+          <NavigationProperty Name="trainer_info" Relationship="Self.FK_trainer" FromRole="race_result" ToRole="trainer_info" />
+        </EntityType>
+        <EntityType Name="racetrack">
+          <Key>
+            <PropertyRef Name="track_id" />
+          </Key>
+          <Property Name="track_id" Type="Int32" Nullable="false" />
+          <Property Name="track_name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="flat_characteristic" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="straight_distance" Type="Decimal" Nullable="false" />
+          <Property Name="course_shape" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="turn_direction" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="speed" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="race_info" Relationship="Self.FK_racetrack" FromRole="racetrack" ToRole="race_info" />
+        </EntityType>
+        <EntityType Name="trainer_info">
+          <Key>
+            <PropertyRef Name="trainer_id" />
+          </Key>
+          <Property Name="trainer_id" Type="Int32" Nullable="false" />
+          <Property Name="trainer_name" Type="String" MaxLength="63" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="alternate_name" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="race_result" Relationship="Self.FK_trainer" FromRole="trainer_info" ToRole="race_result" />
+        </EntityType>
+        <Association Name="FK_horse">
+          <End Role="horse_info" Type="Self.horse_info" Multiplicity="1" />
+          <End Role="race_result" Type="Self.race_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="horse_info">
+              <PropertyRef Name="horse_id" />
+            </Principal>
+            <Dependent Role="race_result">
+              <PropertyRef Name="horse_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_jockey">
+          <End Role="jockey_info" Type="Self.jockey_info" Multiplicity="1" />
+          <End Role="race_result" Type="Self.race_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jockey_info">
+              <PropertyRef Name="jockey_id" />
+            </Principal>
+            <Dependent Role="race_result">
+              <PropertyRef Name="jockey_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_race_info">
+          <End Role="race_info" Type="Self.race_info" Multiplicity="1" />
+          <End Role="race_result" Type="Self.race_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="race_info">
+              <PropertyRef Name="race_id" />
+            </Principal>
+            <Dependent Role="race_result">
+              <PropertyRef Name="race_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_racetrack">
+          <End Role="racetrack" Type="Self.racetrack" Multiplicity="1" />
+          <End Role="race_info" Type="Self.race_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="racetrack">
+              <PropertyRef Name="track_id" />
+            </Principal>
+            <Dependent Role="race_info">
+              <PropertyRef Name="track_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trainer">
+          <End Role="trainer_info" Type="Self.trainer_info" Multiplicity="1" />
+          <End Role="race_result" Type="Self.race_result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trainer_info">
+              <PropertyRef Name="trainer_id" />
+            </Principal>
+            <Dependent Role="race_result">
+              <PropertyRef Name="trainer_key" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ponydbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="horse_info" EntityType="Self.horse_info" />
+          <EntitySet Name="jockey_info" EntityType="Self.jockey_info" />
+          <EntitySet Name="race_info" EntityType="Self.race_info" />
+          <EntitySet Name="race_result" EntityType="Self.race_result" />
+          <EntitySet Name="racetracks" EntityType="Self.racetrack" />
+          <EntitySet Name="trainer_info" EntityType="Self.trainer_info" />
+          <AssociationSet Name="FK_horse" Association="Self.FK_horse">
+            <End Role="horse_info" EntitySet="horse_info" />
+            <End Role="race_result" EntitySet="race_result" />
+          </AssociationSet>
+          <AssociationSet Name="FK_jockey" Association="Self.FK_jockey">
+            <End Role="jockey_info" EntitySet="jockey_info" />
+            <End Role="race_result" EntitySet="race_result" />
+          </AssociationSet>
+          <AssociationSet Name="FK_race_info" Association="Self.FK_race_info">
+            <End Role="race_info" EntitySet="race_info" />
+            <End Role="race_result" EntitySet="race_result" />
+          </AssociationSet>
+          <AssociationSet Name="FK_racetrack" Association="Self.FK_racetrack">
+            <End Role="racetrack" EntitySet="racetracks" />
+            <End Role="race_info" EntitySet="race_info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trainer" Association="Self.FK_trainer">
+            <End Role="trainer_info" EntitySet="trainer_info" />
+            <End Role="race_result" EntitySet="race_result" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ponydbModelStoreContainer" CdmEntityContainer="ponydbEntities">
+          <EntitySetMapping Name="horse_info">
+            <EntityTypeMapping TypeName="ponydbModel.horse_info">
+              <MappingFragment StoreEntitySet="horse_info">
+                <ScalarProperty Name="horse_id" ColumnName="horse_id" />
+                <ScalarProperty Name="horse_name" ColumnName="horse_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="jockey_info">
+            <EntityTypeMapping TypeName="ponydbModel.jockey_info">
+              <MappingFragment StoreEntitySet="jockey_info">
+                <ScalarProperty Name="jockey_id" ColumnName="jockey_id" />
+                <ScalarProperty Name="jockey_name" ColumnName="jockey_name" />
+                <ScalarProperty Name="alternate_name" ColumnName="alternate_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="race_info">
+            <EntityTypeMapping TypeName="ponydbModel.race_info">
+              <MappingFragment StoreEntitySet="race_info">
+                <ScalarProperty Name="race_id" ColumnName="race_id" />
+                <ScalarProperty Name="race_date" ColumnName="race_date" />
+                <ScalarProperty Name="race_time" ColumnName="race_time" />
+                <ScalarProperty Name="track_key" ColumnName="track_key" />
+                <ScalarProperty Name="race_name" ColumnName="race_name" />
+                <ScalarProperty Name="race_restrictions_age" ColumnName="race_restrictions_age" />
+                <ScalarProperty Name="race_class" ColumnName="race_class" />
+                <ScalarProperty Name="race_distance" ColumnName="race_distance" />
+                <ScalarProperty Name="race_prize_money" ColumnName="race_prize_money" />
+                <ScalarProperty Name="race_going" ColumnName="race_going" />
+                <ScalarProperty Name="race_number_of_runners" ColumnName="race_number_of_runners" />
+                <ScalarProperty Name="race_finishing_time" ColumnName="race_finishing_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="race_result">
+            <EntityTypeMapping TypeName="ponydbModel.race_result">
+              <MappingFragment StoreEntitySet="race_result">
+                <ScalarProperty Name="result_id" ColumnName="result_id" />
+                <ScalarProperty Name="race_key" ColumnName="race_key" />
+                <ScalarProperty Name="finishing_position" ColumnName="finishing_position" />
+                <ScalarProperty Name="distance_beaten" ColumnName="distance_beaten" />
+                <ScalarProperty Name="is_winner" ColumnName="is_winner" />
+                <ScalarProperty Name="is_placer" ColumnName="is_placer" />
+                <ScalarProperty Name="horse_key" ColumnName="horse_key" />
+                <ScalarProperty Name="stall" ColumnName="stall" />
+                <ScalarProperty Name="trainer_key" ColumnName="trainer_key" />
+                <ScalarProperty Name="horse_age" ColumnName="horse_age" />
+                <ScalarProperty Name="jockey_key" ColumnName="jockey_key" />
+                <ScalarProperty Name="jockeys_claim" ColumnName="jockeys_claim" />
+                <ScalarProperty Name="pounds" ColumnName="pounds" />
+                <ScalarProperty Name="odds" ColumnName="odds" />
+                <ScalarProperty Name="is_favourite" ColumnName="is_favourite" />
+                <ScalarProperty Name="race_comment" ColumnName="race_comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="racetracks">
+            <EntityTypeMapping TypeName="ponydbModel.racetrack">
+              <MappingFragment StoreEntitySet="racetrack">
+                <ScalarProperty Name="track_id" ColumnName="track_id" />
+                <ScalarProperty Name="track_name" ColumnName="track_name" />
+                <ScalarProperty Name="flat_characteristic" ColumnName="flat_characteristic" />
+                <ScalarProperty Name="straight_distance" ColumnName="straight_distance" />
+                <ScalarProperty Name="course_shape" ColumnName="course_shape" />
+                <ScalarProperty Name="turn_direction" ColumnName="turn_direction" />
+                <ScalarProperty Name="speed" ColumnName="speed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trainer_info">
+            <EntityTypeMapping TypeName="ponydbModel.trainer_info">
+              <MappingFragment StoreEntitySet="trainer_info">
+                <ScalarProperty Name="trainer_id" ColumnName="trainer_id" />
+                <ScalarProperty Name="trainer_name" ColumnName="trainer_name" />
+                <ScalarProperty Name="alternate_name" ColumnName="alternate_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

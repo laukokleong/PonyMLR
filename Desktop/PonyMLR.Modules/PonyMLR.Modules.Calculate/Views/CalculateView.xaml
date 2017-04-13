@@ -1,0 +1,316 @@
+﻿<UserControl x:Class="PonyMLR.Modules.Calculate.CalculateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:DataAccess="clr-namespace:PonyMLR.DataAccess;assembly=PonyMLR.DataAccess"
+             xmlns:Infra="clr-namespace:PonyMLR.Infrastructure;assembly=PonyMLR.Infrastructure"             
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Infra:InvertBoolConverter x:Key="invertBoolConverter"/>
+            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border>
+        <DockPanel>
+            <!-- Title -->
+            <Border DockPanel.Dock="Top" Height="Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="32" TextWrapping="Wrap" Margin="20,2"><Run Text="Calculate"/></TextBlock>
+            </Border>
+            <Border>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>                    
+                    <TabControl Grid.Row="0" IsEnabled="{Binding CanDisplayRaceCard}" ItemsSource="{Binding RaceCards}">
+                        <TabControl.ItemTemplate>                           
+                            <DataTemplate>
+                                <TextBlock FontSize="18" Text="{Binding racetrack.Value}"/>   
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <Grid>                                   
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Row="0" Grid.Column="1">
+                                        <TextBlock Margin="12,15,0,10">
+                                            <Run FontSize="22" FontWeight="Bold">
+                                                <MultiBinding StringFormat="{}{0}   {1}">
+                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" Path="DataContext.SelectedCard.race_time" />
+                                                    <Binding Path="racetrack.Value" Mode="OneWay"/>
+                                                </MultiBinding>
+                                            </Run>
+                                            <LineBreak/>
+                                            <Run FontSize="16">
+                                                <MultiBinding StringFormat="{}{0} ({1}f, Class {2}, {3} runners, {4})">
+                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" Path="DataContext.SelectedCard.race_name" />
+                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" Path="DataContext.SelectedCard.race_distance" />
+                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" Path="DataContext.SelectedCard.race_class" />
+                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" Path="DataContext.SelectedCard.race_number_of_runners" />
+                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type UserControl}}" Path="DataContext.SelectedCard.race_going" />
+                                                </MultiBinding>
+                                            </Run>
+                                        </TextBlock>
+                                    </Grid>
+                                    <DataGrid Grid.Row="1" Grid.Column="0" Margin="8,8,8,8" ItemsSource="{Binding races}" SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedCard}" AutoGenerateColumns="False">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Binding="{Binding Path=race_time}" Header="Time"/>
+                                            <DataGridTextColumn Binding="{Binding Path=race_class, StringFormat='{}Class {0}'}" Header="Class"/>
+                                            <DataGridTextColumn Binding="{Binding Path=race_distance, StringFormat='{}{0} furlongs'}" Header="Distance"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    <DataGrid Grid.Row="1" Grid.Column="1" Margin="8,8,8,8"
+                                              ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedCard.starters}"
+                                              SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedStarter}"
+                                              AutoGenerateColumns="False">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectionChanged">
+                                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedStarterChangedCommand}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Binding="{Binding Path=stall}" Header="Stall"/>
+                                            <DataGridTextColumn Binding="{Binding Path=horse_name}" Header="Horse Name"/>
+                                            <DataGridTextColumn Binding="{Binding Path=horse_age}" Header="Age"/>
+                                            <DataGridTextColumn Binding="{Binding Path=pounds}" Header="Weight"/>
+                                            <DataGridTextColumn Binding="{Binding Path=jockey_name.Value}" Header="Jockey Name" />
+                                            <DataGridTextColumn Binding="{Binding Path=trainer_name.Value}" Header="Trainer Name" />
+                                            <DataGridTextColumn Binding="{Binding Path=early_speed, StringFormat=#0.00}" Header="E. Speed" />
+                                            <DataGridTextColumn Binding="{Binding Path=mlr1.probability_public, StringFormat=#0.00000}" Header="Public" />
+                                            <DataGridTextColumn Binding="{Binding Path=mlr1.probability_fundamental, StringFormat=#0.00000}" Header="F'mental" />
+                                            <DataGridTextColumn Binding="{Binding Path=mlr2.odds_fair, StringFormat=##0.00}" Header="Fair Odds" />
+                                            <DataGridTextColumn Binding="{Binding Path=mlr2.odds_actual, StringFormat=##0.00}" Header="Act. Odds">
+                                                <DataGridTextColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=oddsMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="1">
+                                                                <Setter Property="Foreground" Value="#008A00" />
+                                                                <Setter Property="FontWeight" Value="Medium" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Path=oddsMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="2">
+                                                                <Setter Property="Foreground" Value="#AC193D" />
+                                                                <Setter Property="FontWeight" Value="Medium" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTextColumn.CellStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTemplateColumn Header="Deviation">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Path=mlr2.odds_deviation, StringFormat=#0.00%}">
+                                                            <TextBlock.ToolTip>
+                                                                <ToolTip>
+                                                                    <TextBlock Text="{Binding Path=kellyPercentage, StringFormat=Kelly Fraction: {0:#0.0000}}" />
+                                                                </ToolTip>
+                                                            </TextBlock.ToolTip>
+                                                        </TextBlock>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                                <DataGridTemplateColumn.CellStyle>
+                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=verdict, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="1">
+                                                                <Setter Property="Foreground" Value="FloralWhite" />
+                                                                <Setter Property="Background" Value="ForestGreen" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Path=verdict, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="2">
+                                                                <Setter Property="Foreground" Value="FloralWhite" />
+                                                                <Setter Property="Background" Value="CornflowerBlue" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGridTemplateColumn.CellStyle>
+                                            </DataGridTemplateColumn>                                         
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>                  
+                    <!-- to show progress ring if needed -->
+                    <Controls:ProgressRing Grid.Row="0" IsActive="{Binding CanDisplayRaceCard, Converter={StaticResource invertBoolConverter}}" Foreground="{DynamicResource AccentColorBrush}"/>
+                    <!-- control buttons -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1" Margin="20,20,5,5">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Button Margin="20,15" Padding="10,5" Command="{Binding RemoveStarterFromRaceCommand}" Content="Delete Entry" />
+                            </StackPanel>    
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">                               
+                                <Button Width="50" Height="50" Margin="5,5,5,5" Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding FindRaceCardCommand}" ToolTip="Load Racecards">
+                                    <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_download}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                                <Button Width="50" Height="50" Margin="5,5,5,5" Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding CalculatePredictorVariablesCommand}" ToolTip="Calculate PVs">
+                                    <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_add}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                                <Button Width="50" Height="50" Margin="5,5,5,5" Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding RunMultinomialLogitCommand}" ToolTip="Run MLR">
+                                    <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_play}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                                <Button Width="50" Height="50" Margin="5,5,5,5" Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding StopMultinomialLogitCommand}" ToolTip="Stop MLR">
+                                    <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_pause}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                                <Button Width="50" Height="50" Margin="5,5,5,5" Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding SaveCalculationCommand}" ToolTip="Save Calculation">
+                                    <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_save}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                                <ComboBox x:Name="CalculationOptionsComboBox" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Margin="5,5,5,5" Height="30" Width="150"  FontSize="14"
+                                          IsEnabled="{Binding CanCalculatePredictorVariables}"  ItemsSource="{Binding CalculationOptions}" SelectedValue="{Binding SelectedCalcOption}" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Calendar x:Name="raceCalendar" Grid.Column="0" Margin="20,8" DockPanel.Dock="Bottom" Loaded="Calendar_Loaded" SelectedDate="{Binding Path=SelectedDate}">
+                            <Calendar.LayoutTransform>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+                            </Calendar.LayoutTransform>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectedDatesChanged">
+                                    <i:InvokeCommandAction Command="{Binding SelectionDatesChangedCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Calendar>
+                        <!-- settings -->
+                        <Grid Grid.Column="1" Margin="20,8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style x:Key="SettingsHeaderStyle" TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="16"/>
+                                </Style>
+                            </Grid.Resources>
+                            <!-- MLR version -->
+                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource SettingsHeaderStyle}"  Text="MLR Version" />
+                            <Grid Grid.Column="1" Grid.Row="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <ComboBox x:Name="MlrVersionsComboBox" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Height="25" Width="150"  FontSize="14"
+                                          IsEnabled="{Binding CanCalculatePredictorVariables}"  ItemsSource="{Binding MlrVersions}" SelectedValue="{Binding SelectedMlrVersion}" />
+                                </StackPanel>
+                            </Grid>
+                            <!-- auto refresh -->
+                            <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource SettingsHeaderStyle}"  Text="Auto Refresh Odds" />
+                            <Grid Grid.Column="1" Grid.Row="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border  Width="100">
+                                        <Controls:ToggleSwitch OnLabel="Yes" OffLabel="No" IsChecked="{Binding AutoRefresh}" />
+                                    </Border>
+                                    <TextBlock  Margin="20,0,5,0" FontSize="16" Text="Interval" />
+                                    <Controls:NumericUpDown Minimum="0" Maximum="60" VerticalAlignment="Top" IsEnabled="{Binding AutoRefresh}" Value="{Binding RefreshInterval}" />
+                                </StackPanel>
+                            </Grid>
+                            <!-- odds deviation -->
+                            <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource SettingsHeaderStyle}" Text="Odds Deviation Trigger" />
+                            <Grid Grid.Column="1" Grid.Row="2">
+                                <Slider
+                                    Minimum="0" Maximum="50"
+                                    Value="{Binding OddsDeviationTrigger}"
+                                    AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2"
+                                    IsSnapToTickEnabled="True" IsMoveToPointEnabled="True">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="ValueChanged">
+                                            <i:InvokeCommandAction Command="{Binding Path=OddsSettingsChangedCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Slider>
+                            </Grid>
+                            <!-- back odds -->
+                            <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource SettingsHeaderStyle}" Text="Back Odds Range" />
+                            <Grid Grid.Column="1" Grid.Row="3">
+                                <Controls:RangeSlider
+                                    VerticalAlignment="Top"
+                                    Minimum="1" Maximum="100" MinRangeWidth="1"
+                                    LowerValue="{Binding MinimumBackOdds}"
+                                    UpperValue="{Binding MaximumBackOdds}"
+                                    AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" MoveWholeRange="True"
+                                    IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" ExtendedMode="True">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="LowerThumbDragCompleted">
+                                            <i:InvokeCommandAction Command="{Binding Path=OddsSettingsChangedCommand}"/>
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="UpperThumbDragCompleted">
+                                            <i:InvokeCommandAction Command="{Binding Path=OddsSettingsChangedCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Controls:RangeSlider>
+                            </Grid>
+                            <!-- lay odds -->
+                            <TextBlock Grid.Column="0" Grid.Row="4" Style="{StaticResource SettingsHeaderStyle}" Text="Lay Odds Range" />
+                            <Grid Grid.Column="1" Grid.Row="4">
+                                <Controls:RangeSlider
+                                    VerticalAlignment="Top"
+                                    Minimum="1" Maximum="100" MinRangeWidth="1"
+                                    LowerValue="{Binding MinimumLayOdds}"
+                                    UpperValue="{Binding MaximumLayOdds}"
+                                    AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" MoveWholeRange="True"
+                                    IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" ExtendedMode="True">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="LowerThumbDragCompleted">
+                                            <i:InvokeCommandAction Command="{Binding Path=OddsSettingsChangedCommand}"/>
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="UpperThumbDragCompleted">
+                                            <i:InvokeCommandAction Command="{Binding Path=OddsSettingsChangedCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Controls:RangeSlider>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DockPanel>
+    </Border>
+</UserControl>

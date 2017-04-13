@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="PonyMLR.Modules.Build.BuildNavigatorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:PonyMLR.Modules.Build"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <RadioButton Width="70" Height="70" Margin="5,8" Style="{DynamicResource MetroCircleToggleButtonStyle}" IsChecked="{Binding IsChecked}" Command="{Binding ShowBuildView}">
+        <Rectangle Width="30" Height="30" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+            <Rectangle.OpacityMask>
+                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_console}"/>
+            </Rectangle.OpacityMask>
+        </Rectangle>
+    </RadioButton>
+</UserControl>

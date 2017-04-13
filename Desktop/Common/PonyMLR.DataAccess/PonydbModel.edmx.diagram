@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9a0051867de94f22964653ae34464f4a" Name="Diagram1">
+        <EntityTypeShape EntityType="ponydbModel.horse_info" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ponydbModel.jockey_info" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ponydbModel.race_info" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ponydbModel.race_result" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ponydbModel.racetrack" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ponydbModel.trainer_info" Width="1.5" PointX="3" PointY="11.875" IsExpanded="true" />
+        <AssociationConnector Association="ponydbModel.FK_horse" ManuallyRouted="false" />
+        <AssociationConnector Association="ponydbModel.FK_jockey" ManuallyRouted="false" />
+        <AssociationConnector Association="ponydbModel.FK_race_info" ManuallyRouted="false" />
+        <AssociationConnector Association="ponydbModel.FK_racetrack" ManuallyRouted="false" />
+        <AssociationConnector Association="ponydbModel.FK_trainer" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
