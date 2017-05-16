@@ -12,7 +12,7 @@ using HtmlAgilityPack;
 
 namespace PonyMLR.Modules.Manage
 {
-    public class WebDataUpdater
+    public class WebDataUpdater : IDisposable
     {
         private SportingLifeResults scraper;
         private UnitOfWork uow = new UnitOfWork(Globals.DbName.ToLower());
@@ -190,5 +190,30 @@ namespace PonyMLR.Modules.Manage
 
             return id;
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~WebDataUpdater()   
+        {  
+            //Finalizer 
+            Dispose(false);  
+        }
+ 
+        protected virtual void Dispose(bool disposing)  
+        {
+            if (disposing)
+            {
+                //free managed resources  
+                if (uow != null)
+                {
+                    uow.Dispose();
+                    uow = null;
+                }            
+            }  
+        } 
     }
 }

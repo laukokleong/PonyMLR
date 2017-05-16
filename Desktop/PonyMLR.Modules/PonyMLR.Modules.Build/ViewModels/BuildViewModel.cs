@@ -24,7 +24,7 @@ using PonyMLR.Logit;
 
 namespace PonyMLR.Modules.Build
 {
-    public class BuildViewModel : ViewModelBase, IRegionMemberLifetime
+    public class BuildViewModel : ViewModelBase, IRegionMemberLifetime, IDisposable
     {
         private IRegionManager regionmanager;
         private IEventAggregator eventaggregator;
@@ -292,7 +292,7 @@ namespace PonyMLR.Modules.Build
                         }
                     }
 
-                    calc.Dispose();
+                    //calc.Dispose();
                 }
 
                 bw_cpv.ReportProgress(endRaceId - raceId + 1);
@@ -413,6 +413,37 @@ namespace PonyMLR.Modules.Build
         {
             get { return true; }
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~BuildViewModel()   
+        {  
+            //Finalizer 
+            Dispose(false);  
+        }
+ 
+        protected virtual void Dispose(bool disposing)  
+        {  
+            if (disposing)   
+            {  
+                //free managed resources  
+                if (uow != null)  
+                {
+                    uow.Dispose();
+                    uow = null;  
+                }
+
+                if (bw_cpv != null)
+                {
+                    bw_cpv.Dispose();
+                    bw_cpv = null;
+                }
+            }              
+        } 
     }
 }
 

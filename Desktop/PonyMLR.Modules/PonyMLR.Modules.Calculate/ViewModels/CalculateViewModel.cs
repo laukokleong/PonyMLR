@@ -23,7 +23,7 @@ using PonyMLR.Logit;
 
 namespace PonyMLR.Modules.Calculate
 {
-    public class CalculateViewModel : ViewModelBase, IRegionMemberLifetime
+    public class CalculateViewModel : ViewModelBase, IRegionMemberLifetime, IDisposable
     {
         private IRegionManager regionmanager;
         private IEventAggregator eventaggregator;
@@ -1148,5 +1148,48 @@ namespace PonyMLR.Modules.Calculate
         {
             get { return true; }
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~CalculateViewModel()   
+        {  
+            //Finalizer 
+            Dispose(false);  
+        }
+ 
+        protected virtual void Dispose(bool disposing)  
+        {
+            if (disposing)
+            {
+                //free managed resources  
+                if (uow != null)
+                {
+                    uow.Dispose();
+                    uow = null;
+                }
+
+                if (bw_cpv != null)
+                {
+                    bw_cpv.Dispose();
+                    bw_cpv = null;
+                }
+
+                if (bw_mlr != null)
+                {
+                    bw_mlr.Dispose();
+                    bw_mlr = null;
+                }
+
+                if (bw_rcf != null)
+                {
+                    bw_rcf.Dispose();
+                    bw_rcf = null;
+                }
+            }
+        } 
     }
 }

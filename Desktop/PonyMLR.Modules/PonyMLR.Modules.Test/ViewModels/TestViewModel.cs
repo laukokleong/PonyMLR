@@ -24,7 +24,7 @@ using MathNet.Numerics;
 
 namespace PonyMLR.Modules.Test
 {
-    public class TestViewModel : ViewModelBase, IRegionMemberLifetime
+    public class TestViewModel : ViewModelBase, IRegionMemberLifetime, IDisposable
     {
         private IRegionManager regionmanager;
         private IEventAggregator eventaggregator;
@@ -1429,6 +1429,37 @@ namespace PonyMLR.Modules.Test
         {
             get { return true; }
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~TestViewModel()   
+        {  
+            //Finalizer 
+            Dispose(false);  
+        }
+ 
+        protected virtual void Dispose(bool disposing)  
+        {
+            if (disposing)
+            {
+                //free managed resources  
+                if (uow != null)
+                {
+                    uow.Dispose();
+                    uow = null;
+                }
+
+                if (bw != null)
+                {
+                    bw.Dispose();
+                    bw = null;
+                }
+            }
+        } 
     }
 }
 

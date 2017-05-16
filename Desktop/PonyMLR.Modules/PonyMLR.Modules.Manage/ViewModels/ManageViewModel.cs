@@ -18,7 +18,7 @@ using PonyMLR.DataAccess;
 
 namespace PonyMLR.Modules.Manage
 {
-    public class ManageViewModel : ViewModelBase, IRegionMemberLifetime
+    public class ManageViewModel : ViewModelBase, IRegionMemberLifetime, IDisposable
     {
         private IRegionManager regionmanager;
         private IEventAggregator eventaggregator;
@@ -336,5 +336,36 @@ namespace PonyMLR.Modules.Manage
         {
             get { return true; }
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~ManageViewModel()   
+        {  
+            //Finalizer 
+            Dispose(false);  
+        }
+ 
+        protected virtual void Dispose(bool disposing)  
+        {
+            if (disposing)
+            {
+                //free managed resources  
+                if (uow != null)
+                {
+                    uow.Dispose();
+                    uow = null;
+                }
+
+                if (bw != null)
+                {
+                    bw.Dispose();
+                    bw = null;
+                }
+            }            
+        } 
     }
 }
