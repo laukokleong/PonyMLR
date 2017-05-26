@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PonyMLR.DataAccess
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private ponydbEntities context;
         private GenericRepository<race_info> raceInfoRepository;

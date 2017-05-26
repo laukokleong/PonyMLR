@@ -14,6 +14,7 @@ using PonyMLR.Modules.Manage;
 using PonyMLR.Modules.Calculate;
 using PonyMLR.Modules.Build;
 using PonyMLR.Modules.Test;
+using PonyMLR.DataAccess;
 
 namespace PonyMLR
 {
@@ -87,6 +88,8 @@ namespace PonyMLR
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
+
+            this.Container.RegisterType(typeof(IUnitOfWork), typeof(UnitOfWork));
 
             // register the new navigation service that uses synchronous navigation confirmation instead of the async confirmation.
             this.Container.RegisterType(typeof(IRegionNavigationService), typeof(RegionNavigationService));

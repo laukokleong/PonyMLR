@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\IUnitOfWork.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
     <Compile Include="trainer_info.cs">
       <DependentUpon>PonydbModel.tt</DependentUpon>
