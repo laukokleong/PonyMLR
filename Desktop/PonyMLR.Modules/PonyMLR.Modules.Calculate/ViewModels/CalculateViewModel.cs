@@ -115,17 +115,23 @@ namespace PonyMLR.Modules.Calculate
 
         private void FindRaceCard(object arg)
         {
+            if (uow == null) return;
+
             if (bw_rcf.IsBusy != true)
                 bw_rcf.RunWorkerAsync();
         }
 
         private void CalculatePredictorVariables(object arg)
         {
+            if (uow == null) return;
+
             if ((bw_cpv.IsBusy != true) && (bw_rcf.IsBusy != true))
             {
                 if ((IsPvCalculated() == false) || (this._allowRecalculatePv == true))
                 {
                     this._allowRecalculatePv = false;
+
+                    eventaggregator.GetEvent<DatabaseLockedEvent>().Publish("CalculateModule");
                     bw_cpv.RunWorkerAsync();
                 }
             }
@@ -133,6 +139,8 @@ namespace PonyMLR.Modules.Calculate
 
         private void RunMultinomialLogit(object arg)
         {
+            if (uow == null) return;
+
             if (bw_cpv.IsBusy == true)
                 return;
 
@@ -768,6 +776,7 @@ namespace PonyMLR.Modules.Calculate
             }
 
             CanDisplayRaceCard = true;
+            eventaggregator.GetEvent<DatabaseUnlockedEvent>().Publish("CalculateModule");
         }
 
         private void bw_cpv_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -951,13 +960,19 @@ namespace PonyMLR.Modules.Calculate
             }
         }
 
-        private void OnDatabaseChanged(string module)
+        private void OnDatabaseChanged(object db)
         {
-            if (Globals.DbName.ToLower().CompareTo(uow.dbName) != 0)
+            if (db != null)
             {
-                uow.Dispose();
-                uow = new UnitOfWork(Globals.DbName.ToLower());
-            }
+                try
+                {
+                    uow = (UnitOfWork)db;
+                }
+                catch (Exception e)
+                {
+                    statusSender.SendStatus("Invalid DB: " + e.Message);
+                }
+            }           
         }
 
         public ICommand FindRaceCardCommand { get; private set; }

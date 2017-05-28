@@ -95,6 +95,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\PonyMLR.DataAccess\PonyMLR.DataAccess.csproj">
+      <Project>{198cb8b8-60e7-4683-aded-ab53952f425a}</Project>
+      <Name>PonyMLR.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\PonyMLR.Infrastructure\PonyMLR.Infrastructure.csproj">
       <Project>{dd146a7d-01ae-44d7-b4bf-3182fe3b12c2}</Project>
       <Name>PonyMLR.Infrastructure</Name>

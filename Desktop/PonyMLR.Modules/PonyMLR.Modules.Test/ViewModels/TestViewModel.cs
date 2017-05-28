@@ -1094,6 +1094,7 @@ namespace PonyMLR.Modules.Test
                 UpdateResults();
             }
 
+            eventaggregator.GetEvent<DatabaseUnlockedEvent>().Publish("TestModule");
         }
 
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -1114,9 +1115,13 @@ namespace PonyMLR.Modules.Test
 
         private void StartTest(object arg)
         {
+            if (uow == null) return;
+
             if (bw.IsBusy != true)
             {
                 ClearBets();
+
+                eventaggregator.GetEvent<DatabaseLockedEvent>().Publish("TestModule");
                 bw.RunWorkerAsync();
                 statusSender.SendStatus("Starting...");
             }
@@ -1168,15 +1173,24 @@ namespace PonyMLR.Modules.Test
             }
         }
 
-        private void OnDatabaseChanged(string module)
+        private void OnDatabaseChanged(object db)
         {
-            if (Globals.DbName.ToLower().CompareTo(uow.dbName) != 0)
+            if (db != null)
             {
-                uow.Dispose();
-                uow = new UnitOfWork(Globals.DbName.ToLower());
-
-                RaisePropertyChangedEvent("TrackSelectionsList");
+                try
+                {
+                    uow = (UnitOfWork)db;
+                }
+                catch (Exception e)
+                {
+                    statusSender.SendStatus("Invalid DB: " + e.Message);
+                }
             }
+
+            if (uow != null)
+            {
+                RaisePropertyChangedEvent("TrackSelectionsList");
+            }             
         }
 
         //setup parameters

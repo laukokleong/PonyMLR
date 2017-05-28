@@ -325,6 +325,7 @@ namespace PonyMLR.Modules.Build
                 //this.tbProgress.Text = "Done!";               
             }
 
+            eventaggregator.GetEvent<DatabaseUnlockedEvent>().Publish("BuildModule");
         }
 
         private void bw_cpv_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -345,8 +346,11 @@ namespace PonyMLR.Modules.Build
 
         private void CalculatePredictorVariables(object arg)
         {
+            if (uow == null) return;
+
             if (bw_cpv.IsBusy != true)
             {
+                eventaggregator.GetEvent<DatabaseLockedEvent>().Publish("BuildModule");
                 bw_cpv.RunWorkerAsync();
                 ClearLogText();
                 UpdateLogText("Initializing...");
@@ -361,21 +365,32 @@ namespace PonyMLR.Modules.Build
 
         private void StopPredictorVariables(object arg)
         {
+            if (uow == null) return;
+
             if (bw_cpv.IsBusy == true)
             {
                 bw_cpv.CancelAsync();
             }
         }
 
-        private void OnDatabaseChanged(string module)
+        private void OnDatabaseChanged(object db)
         {
-            if (Globals.DbName.ToLower().CompareTo(uow.dbName) != 0)
+            if (db != null)
             {
-                uow.Dispose();
-                uow = new UnitOfWork(Globals.DbName.ToLower());
-
-                RaisePropertyChangedEvent("TrackSelectionsList");
+                try
+                {
+                    uow = (UnitOfWork)db;
+                }
+                catch (Exception e)
+                {
+                    statusSender.SendStatus("Invalid DB: " + e.Message);
+                }
             }
+
+            if (uow != null)
+            {
+                RaisePropertyChangedEvent("TrackSelectionsList");
+            }         
         }
 
         //progress

@@ -10,7 +10,7 @@ namespace PonyMLR.Infrastructure
  
     // Menu bar
     public class NavigationCompletedEvent : CompositePresentationEvent<string> { }
-    public class DatabaseSetCompletedEvent : CompositePresentationEvent<string> { }
+    public class DatabaseSetCompletedEvent : CompositePresentationEvent<object> { }
 
     // Status bar
     public class StatusBarUpdateEvent : CompositePresentationEvent<string> { }
@@ -18,4 +18,8 @@ namespace PonyMLR.Infrastructure
 
     // Research panel
     public class ResearchPanelUpdateEvent : CompositePresentationEvent<List<race_result>> { }
+
+    // Modules
+    public class DatabaseLockedEvent : CompositePresentationEvent<string> { }
+    public class DatabaseUnlockedEvent : CompositePresentationEvent<string> { }
 }

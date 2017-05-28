@@ -7,6 +7,7 @@ using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.Commands;
 using PonyMLR.Infrastructure;
+using PonyMLR.DataAccess;
 
 namespace PonyMLR.Core.DatabaseSelect
 {
@@ -16,6 +17,9 @@ namespace PonyMLR.Core.DatabaseSelect
 
         private ObservableCollection<string> _databases;
         private string _selectedDb;
+        private UnitOfWork _uow = null;
+        private bool _databaseLocked = false;
+
 
         public DatabaseSelectViewModel(IEventAggregator eventaggregator)
         {
@@ -29,8 +33,11 @@ namespace PonyMLR.Core.DatabaseSelect
             
             //initialize selected db
             SelectedDb = Databases[0];
-        }
 
+            eventaggregator.GetEvent<DatabaseLockedEvent>().Subscribe(OnDatabaseLocked, ThreadOption.UIThread);
+            eventaggregator.GetEvent<DatabaseUnlockedEvent>().Subscribe(OnDatabaseUnlocked, ThreadOption.UIThread);
+        }
+        
         public ObservableCollection<string> Databases
         {
             get
@@ -53,21 +60,50 @@ namespace PonyMLR.Core.DatabaseSelect
             }
         }
 
+        public UnitOfWork Uow
+        {
+            get
+            {
+                return _uow;
+            }
+        }
+
+        private void CommandStateChanged()
+        {
+            ((DelegateCommand<object>)SetDatabaseCommand).RaiseCanExecuteChanged();
+        }
+
         private void SetDatabase(object arg)
         {
             //set database
             Globals.DbName = SelectedDb;
 
+            // innstantiate uow
+            _uow = null;
+            _uow = new UnitOfWork(Globals.DbName);
+
             // inform other modules on database changed
-            eventaggregator.GetEvent<DatabaseSetCompletedEvent>().Publish("DatabaseSelectModule");
+            eventaggregator.GetEvent<DatabaseSetCompletedEvent>().Publish(Uow);
             eventaggregator.GetEvent<StatusBarUpdateEvent>().Publish(Globals.DbName + " database selected");
         }
 
         private bool CanSetDatabase(object arg)
         {
-            return true;
+            return !_databaseLocked;
         }
 
         public ICommand SetDatabaseCommand { get; private set; }
+
+        private void OnDatabaseLocked(string obj)
+        {
+            _databaseLocked = true;
+            CommandStateChanged();
+        }
+
+        private void OnDatabaseUnlocked(string obj)
+        {
+            _databaseLocked = false;
+            CommandStateChanged();
+        }
     }
 }

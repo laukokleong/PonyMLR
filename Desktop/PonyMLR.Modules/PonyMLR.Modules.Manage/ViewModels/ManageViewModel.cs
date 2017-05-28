@@ -22,7 +22,7 @@ namespace PonyMLR.Modules.Manage
     {
         private IRegionManager regionmanager;
         private IEventAggregator eventaggregator;
-        private UnitOfWork uow = new UnitOfWork(Globals.DbName.ToLower());
+        private UnitOfWork uow;
         private StatusSender statusSender;
 
         private BackgroundWorker bw = new BackgroundWorker();
@@ -30,7 +30,7 @@ namespace PonyMLR.Modules.Manage
         private ObservableCollection<race_info> _racesInfo;
         private race_info _selectedRace;
         private race_result _selectedStarter;
-        private bool _canDisplayRaces;
+        private bool _canDisplayRaces = true;
         private bool _hasNewData = false;
 
         public ManageViewModel(IRegionManager regionmanager, IEventAggregator eventaggregator)
@@ -52,7 +52,7 @@ namespace PonyMLR.Modules.Manage
             eventaggregator.GetEvent<DatabaseSetCompletedEvent>().Subscribe(OnDatabaseChanged, ThreadOption.UIThread);
 
             // discover new data when starts
-            DiscoverRaceData();
+            //DiscoverRaceData();
         }
 
         public ObservableCollection<race_info> RacesInfo
@@ -93,6 +93,8 @@ namespace PonyMLR.Modules.Manage
 
         private void DiscoverRaceData()
         {
+            if (uow == null) return;
+
             if (bw.IsBusy != true)
             {
                 // clear all data before getting new
@@ -101,6 +103,8 @@ namespace PonyMLR.Modules.Manage
                     this._racesInfo.Clear();
                     RaisePropertyChangedEvent("RacesInfo");
                 }
+
+                eventaggregator.GetEvent<DatabaseLockedEvent>().Publish("ManageModule");
                 bw.RunWorkerAsync();
             }
         }
@@ -246,7 +250,9 @@ namespace PonyMLR.Modules.Manage
                     CanDisplayRaces = true;
                     RaisePropertyChangedEvent("RacesInfo");                 
                 }              
-            }          
+            }
+
+            eventaggregator.GetEvent<DatabaseUnlockedEvent>().Publish("ManageModule");
         }
 
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -317,13 +323,22 @@ namespace PonyMLR.Modules.Manage
             }
         }
 
-        private void OnDatabaseChanged(string module)
+        private void OnDatabaseChanged(object db)
         {
-            if ((Globals.DbName.ToLower().CompareTo(uow.dbName) != 0) && (bw.IsBusy != true))
+            if (db != null)
             {
-                uow.Dispose();
-                uow = new UnitOfWork(Globals.DbName.ToLower());
+                try
+                {
+                    uow = (UnitOfWork)db;
+                }
+                catch (Exception e)
+                {
+                    statusSender.SendStatus("Invalid DB: " + e.Message);
+                }
+            }
 
+            if (uow != null)
+            {
                 DiscoverRaceData();
             }
         }
